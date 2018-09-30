@@ -46,6 +46,37 @@ matrix_struct addMatrix(matrix_struct m1, matrix_struct m2) {
       res.array[i][j] = m1.array[i][j] + m2.array[i][j];
     }
   }
-  
+
   return res;
+}
+
+double getMatrixDeterminant(matrix_struct m) {
+  double determinant = 0;
+  if (m.rows != m.cols) perror("MATRIX SIZE ERROR!");
+  if (m.rows == 0) return 1;
+  if (m.rows == 1) return m.array[0][0];
+  if (m.rows == 2) return m.array[0][0] * m.array[1][1] - m.array[0][1] * m.array[1][0];
+
+  for (int i=0; i<m.rows; i++) {
+    int t_row, t_col;
+    int flag = i % 2 == 0 ? 1 : -1;
+    matrix_struct t;
+    t.rows = m.rows - 1;
+    t.cols = m.cols - 1;
+    t.array = matrixMemoryAllocation(t.array, t.rows, t.cols);
+
+    t_row = 0;
+    for (int j=1; j<m.rows; j++) {      
+      t_col = 0;
+      for (int k=0; k<m.cols; k++) {
+        if (k == i) continue;
+        t.array[t_row][t_col] = m.array[j][k];
+        t_col++;
+      }
+      t_row++;
+    }
+    
+    determinant += getMatrixDeterminant(t) * m.array[0][i] * flag;
+  }
+  return determinant;
 }
