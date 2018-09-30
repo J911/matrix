@@ -31,6 +31,6 @@ int main() {
 
   printf("Convert Transposed Matrix: \n");
   printMatrix(t1);
-  
+
   return 0;
 }
